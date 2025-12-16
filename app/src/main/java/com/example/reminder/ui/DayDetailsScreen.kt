@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.unit.dp
 import com.example.reminder.data.DayEvent
 import java.time.LocalDate
@@ -280,6 +281,7 @@ private fun DayMarkDialog(
 }
 
 private val PALETTE = listOf(
+    0xFFFFFFFF.toInt(),
     0xFFEF5350.toInt(),
     0xFFAB47BC.toInt(),
     0xFF5C6BC0.toInt(),
@@ -290,15 +292,20 @@ private val PALETTE = listOf(
 )
 
 @Composable
-private fun ColorPickerRow(selected: Int, onPick: (Int) -> Unit) {
+private fun ColorPickerRow(
+    selected: Int,
+    onPick: (Int) -> Unit
+) {
     Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
-        PALETTE.forEach { c ->
-            Box(
-                Modifier
-                    .size(26.dp)
-                    .background(Color(c), shape = MaterialTheme.shapes.small)
-                    .clickable { onPick(c) }
-            )
-        }
+        PALETTE
+            .filter { it != Color.White.toArgb() }
+            .forEach { c ->
+                Box(
+                    Modifier
+                        .size(26.dp)
+                        .background(Color(c), shape = MaterialTheme.shapes.small)
+                        .clickable { onPick(c) }
+                )
+            }
     }
 }
